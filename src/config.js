@@ -10,5 +10,5 @@
 //
 // The anon key is safe to put in the code — it is designed to be public.
 
-export const SUPABASE_URL = '';
-export const SUPABASE_ANON_KEY = '';
+export const SUPABASE_URL = 'https://ipwshbmxnwtaaarexsje.supabase.co';
+export const SUPABASE_ANON_KEY = 'sb_publishable_3kJ6eF2R99qrAIf1UqGV4w__EEE32ID';
