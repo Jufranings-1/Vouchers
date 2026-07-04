@@ -1,0 +1,104 @@
+import { useEffect, useState } from 'react';
+import VoucherPreview from './VoucherPreview.jsx';
+import { listVouchers } from '../lib/backend.js';
+import { downloadVoucherHtml } from '../lib/download.js';
+
+const fmt = (value) =>
+  (Number(value) || 0).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+export default function HistoryScreen() {
+  const [rows, setRows] = useState([]);
+  const [search, setSearch] = useState('');
+  const [selected, setSelected] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  async function load(query) {
+    setLoading(true);
+    setError('');
+    try {
+      setRows(await listVouchers(query));
+    } catch (e) {
+      setError('Could not load history: ' + (e.message || e));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    load('');
+  }, []);
+
+  return (
+    <div className="panel">
+      <h2>Voucher History</h2>
+      <form
+        className="search-row"
+        onSubmit={(e) => {
+          e.preventDefault();
+          load(search);
+        }}
+      >
+        <input
+          placeholder="Search by loan number or borrower name…"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <button className="btn" type="submit">Search</button>
+      </form>
+
+      {error && <p className="error-text">{error}</p>}
+
+      {loading ? (
+        <p>Loading…</p>
+      ) : (
+        <table className="history-table">
+          <thead>
+            <tr>
+              <th>Loan No.</th>
+              <th>Date</th>
+              <th>Borrower</th>
+              <th>Loan Amount</th>
+              <th>Cash in Bank</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row.loan_number}>
+                <td><strong>{row.loan_number}</strong></td>
+                <td>{row.voucher_date || ''}</td>
+                <td>{row.borrower}</td>
+                <td>{fmt(row.loan_amount)}</td>
+                <td>{fmt(row.cash_in_bank)}</td>
+                <td>
+                  <button className="btn" onClick={() => setSelected(row)}>View</button>
+                </td>
+              </tr>
+            ))}
+            {rows.length === 0 && (
+              <tr>
+                <td colSpan="6">No vouchers found.</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      )}
+
+      {selected && (
+        <div className="modal-overlay" onClick={() => setSelected(null)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-actions">
+              <button className="btn" onClick={() => window.print()}>🖨 Print</button>
+              <button className="btn" onClick={() => downloadVoucherHtml(selected.loan_number)}>
+                ⬇ Download
+              </button>
+              <button className="btn" onClick={() => setSelected(null)}>Close</button>
+            </div>
+            <VoucherPreview voucher={selected} />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
