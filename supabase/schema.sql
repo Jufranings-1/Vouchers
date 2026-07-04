@@ -63,6 +63,13 @@ $$;
 alter table voucher_counter enable row level security;
 alter table vouchers enable row level security;
 
+-- "drop ... if exists" first makes this script safe to run more than once.
+drop policy if exists "office can read counter"   on voucher_counter;
+drop policy if exists "office can update counter" on voucher_counter;
+drop policy if exists "office can read vouchers"   on vouchers;
+drop policy if exists "office can insert vouchers" on vouchers;
+drop policy if exists "office can update vouchers" on vouchers;
+
 create policy "office can read counter"  on voucher_counter for select to anon using (true);
 create policy "office can update counter" on voucher_counter for update to anon using (true) with check (true);
 
