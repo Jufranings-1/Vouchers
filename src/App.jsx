@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import VoucherForm from './components/VoucherForm.jsx';
 import VoucherPreview from './components/VoucherPreview.jsx';
 import HistoryScreen from './components/HistoryScreen.jsx';
 import SettingsScreen from './components/SettingsScreen.jsx';
-import { isDemoMode, reserveLoanNumber, saveVoucher } from './lib/backend.js';
+import PasswordGate from './components/PasswordGate.jsx';
+import { isDemoMode, hasSession, reserveLoanNumber, saveVoucher } from './lib/backend.js';
 import { pesosInWords } from './lib/numberToWords.js';
 import { downloadVoucherHtml } from './lib/download.js';
 
@@ -29,12 +30,18 @@ const emptyVoucher = () => ({
 });
 
 export default function App() {
+  // null = still checking, false = locked, true = unlocked
+  const [unlocked, setUnlocked] = useState(isDemoMode ? true : null);
   const [screen, setScreen] = useState('voucher');
   const [voucher, setVoucher] = useState(emptyVoucher());
   // Cash in Bank and Amount in Words auto-fill until the user types their
   // own value into them; then we stop overwriting.
   const [manual, setManual] = useState({ cash: false, words: false });
   const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    if (!isDemoMode) hasSession().then(setUnlocked);
+  }, []);
 
   function updateField(name, value) {
     const next = { ...voucher, [name]: value };
@@ -89,6 +96,9 @@ export default function App() {
     }
     window.print();
   }
+
+  if (unlocked === null) return null;
+  if (!unlocked) return <PasswordGate onUnlocked={() => setUnlocked(true)} />;
 
   return (
     <>

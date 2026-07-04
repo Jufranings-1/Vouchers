@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../config.js';
+import { SUPABASE_URL, SUPABASE_ANON_KEY, OFFICE_EMAIL } from '../config.js';
 
 // With no Supabase settings, the app falls back to this browser's local
 // storage so it can be tried out - but numbers are NOT shared between
@@ -24,6 +24,24 @@ const VOUCHERS_KEY = 'cv_vouchers';
 const readCounter = () =>
   JSON.parse(localStorage.getItem(COUNTER_KEY) || '{"prefix":"JRM26","last_number":5257}');
 const readVouchers = () => JSON.parse(localStorage.getItem(VOUCHERS_KEY) || '[]');
+
+// ---------- password lock (shared office account) ----------
+
+// True when this browser is already unlocked (has a valid session).
+export async function hasSession() {
+  if (isDemoMode) return true;
+  const { data } = await supabase.auth.getSession();
+  return !!data.session;
+}
+
+// Signs in with the shared office password. Throws if it is wrong.
+export async function unlock(password) {
+  const { error } = await supabase.auth.signInWithPassword({
+    email: OFFICE_EMAIL,
+    password,
+  });
+  if (error) throw error;
+}
 
 // ---------- API used by the app ----------
 

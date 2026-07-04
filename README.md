@@ -45,6 +45,23 @@ browser only. Good for trying it out — not for the office.
    every computer that opens the site now shares the same loan numbers and
    history.
 
+## Turn on the office password (recommended)
+
+One shared password for all staff — no individual accounts. The database
+refuses every request from anyone who hasn't entered it, so it protects
+work-from-home use too.
+
+1. Supabase Dashboard → **Authentication → Users → Add user → Create new user**
+   - Email: `office@jrm-vouchers.app` (must match `OFFICE_EMAIL` in `src/config.js`)
+   - Password: the office password you choose
+   - **Auto Confirm User: checked**
+2. SQL Editor → run the whole of
+   [`supabase/enable-password-lock.sql`](supabase/enable-password-lock.sql).
+3. Done. The app now shows a password screen on first use per device.
+
+To change the password later: Authentication → Users → click the office
+user → Reset password.
+
 ## Set the starting loan number
 
 When the client tells you their current number (e.g. `JRM26-5257`):
