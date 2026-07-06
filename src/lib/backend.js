@@ -98,14 +98,26 @@ export async function getCounter() {
   return data;
 }
 
-export async function updateCounter(prefix, lastNumber) {
+// Changing the counter needs the separate Settings password (not the office
+// login password) - checked by the database itself in update_counter().
+export async function updateCounter(prefix, lastNumber, settingsPassword) {
   if (isDemoMode) {
     localStorage.setItem(COUNTER_KEY, JSON.stringify({ prefix, last_number: lastNumber }));
     return;
   }
-  const { error } = await supabase
-    .from('voucher_counter')
-    .update({ prefix, last_number: lastNumber })
-    .eq('id', 1);
-  if (error) throw error;
+  const { error } = await supabase.rpc('update_counter', {
+    p_prefix: prefix,
+    p_last_number: lastNumber,
+    p_password: settingsPassword,
+  });
+  if (error) throw new Error(error.message);
+}
+
+export async function changeSettingsPassword(oldPassword, newPassword) {
+  if (isDemoMode) return;
+  const { error } = await supabase.rpc('change_settings_password', {
+    p_old_password: oldPassword,
+    p_new_password: newPassword,
+  });
+  if (error) throw new Error(error.message);
 }

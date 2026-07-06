@@ -69,7 +69,7 @@ export default function VoucherPreview({ voucher }) {
         </thead>
         <tbody>
           <tr>
-            <td>{voucher.particulars}</td>
+            <td className="v-particulars-amt">{voucher.particulars}</td>
             <td className="amt v-particulars-amt">{money(loanAmount)}</td>
           </tr>
         </tbody>

@@ -98,6 +98,17 @@ body {
   max-width: 520px;
 }
 
+.settings-divider {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.settings-divider h3 {
+  font-size: 14px;
+  margin: 0 0 10px;
+}
+
 .field {
   margin-bottom: 10px;
 }

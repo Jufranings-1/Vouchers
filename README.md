@@ -62,13 +62,28 @@ work-from-home use too.
 To change the password later: Authentication → Users → click the office
 user → Reset password.
 
+## Turn on the Settings password (protects editing the loan number)
+
+A SECOND password, separate from the office login above. Everyone who has
+the office password can create and print vouchers, but changing the loan
+number counter in Settings additionally requires this one. It is checked
+by the database itself (via a Postgres function), so it holds even for
+someone signed in as office staff.
+
+1. SQL Editor → run the whole of
+   [`supabase/add-settings-password.sql`](supabase/add-settings-password.sql).
+2. The default Settings password afterward is `ChangeThis123`. Open the
+   app → **Settings** → scroll to **Change Settings Password** → set your
+   own immediately. (Nobody but whoever you tell it to should know it.)
+
 ## Set the starting loan number
 
 When the client tells you their current number (e.g. `JRM26-5257`):
 
 1. Open the app → **Settings**.
 2. Prefix: `JRM26` — Last issued number: `5257`.
-3. Save. The next voucher will be `JRM26-5258`.
+3. Enter the **Settings password** (see above) → Save. The next voucher
+   will be `JRM26-5258`.
 
 At New Year (or whenever the prefix changes), come back to Settings and
 update the prefix the same way.
