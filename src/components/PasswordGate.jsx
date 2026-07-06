@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { unlock } from '../lib/backend.js';
+import logoUrl from '../assets/logo.png';
 
 export default function PasswordGate({ onUnlocked }) {
   const [password, setPassword] = useState('');
@@ -24,9 +25,7 @@ export default function PasswordGate({ onUnlocked }) {
   return (
     <div className="gate">
       <form className="gate-card" onSubmit={handleSubmit}>
-        <div className="gate-logo">
-          J<sup>2</sup>M
-        </div>
+        <img src={logoUrl} alt="J2M Lending Investor Inc." className="gate-logo-img" />
         <h2>Check Voucher System</h2>
         <p>Enter the office password to continue. You will only be asked once on this device.</p>
         <input

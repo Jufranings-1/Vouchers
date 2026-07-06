@@ -1,5 +1,12 @@
+import logoUrl from '../assets/logo.png';
+
 function num(voucher, key) {
   return parseFloat(voucher[key]) || 0;
+}
+
+function formatLoanNumber(loanNumber) {
+  if (!loanNumber) return '';
+  return loanNumber.replace('-', ' - ');
 }
 
 function money(value) {
@@ -31,9 +38,7 @@ export default function VoucherPreview({ voucher }) {
     <div className="voucher voucher-print">
       <div className="v-header">
         <div className="v-logo">
-          <div className="v-logo-oval">
-            J<sup>2</sup>M
-          </div>
+          <img src={logoUrl} alt="J2M Lending Investor Inc." className="v-logo-img" />
           <div className="v-logo-text">LENDING INVESTOR INC.</div>
         </div>
         <div className="v-payto">
@@ -46,7 +51,7 @@ export default function VoucherPreview({ voucher }) {
         <div className="v-meta">
           <div>
             <span>Loan No.</span>
-            <strong className="v-underline">{voucher.loan_number}</strong>
+            <strong className="v-underline">{formatLoanNumber(voucher.loan_number)}</strong>
           </div>
           <div>
             <span>Date</span>
@@ -65,7 +70,7 @@ export default function VoucherPreview({ voucher }) {
         <tbody>
           <tr>
             <td>{voucher.particulars}</td>
-            <td className="amt">{money(loanAmount)}</td>
+            <td className="amt v-particulars-amt">{money(loanAmount)}</td>
           </tr>
         </tbody>
       </table>
