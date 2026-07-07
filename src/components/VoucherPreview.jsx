@@ -135,10 +135,10 @@ export default function VoucherPreview({ voucher }) {
                 Cash <u>{voucher.cash}</u>
               </span>
             </div>
-            <div className="v-received">
-              <span>Received by:</span>
-              <div className="v-sign-line">{voucher.borrower}</div>
-            </div>
+          </div>
+          <div className="v-received">
+            <span>Received by:</span>
+            <div className="v-sign-line">{voucher.borrower}</div>
           </div>
         </div>
       </div>

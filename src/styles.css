@@ -450,7 +450,7 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 30px;
   margin-top: 22px;
 }
 
@@ -492,7 +492,6 @@ body {
 
 .v-received {
   font-size: 14px;
-  margin-top: 30px;
 }
 
 .v-sign-line {
