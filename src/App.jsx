@@ -91,8 +91,13 @@ export default function App() {
   async function handlePrint() {
     try {
       await persistCurrent();
-    } catch {
-      // saving failed (e.g. offline) - still let the user print
+    } catch (e) {
+      alert(
+        'WARNING: This voucher could NOT be saved to History.\n\n' +
+          (e.message || e) +
+          '\n\nIt will still print, but check your internet connection and try Print again once ' +
+          'reconnected — otherwise it will be missing from History.'
+      );
     }
     window.print();
   }
