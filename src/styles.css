@@ -475,6 +475,7 @@ body {
 
 .v-bankline {
   display: flex;
+  justify-content: space-between;
   gap: 14px;
   font-size: 13px;
   flex-wrap: wrap;
