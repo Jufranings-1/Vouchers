@@ -6,7 +6,7 @@ import SettingsScreen from './components/SettingsScreen.jsx';
 import PasswordGate from './components/PasswordGate.jsx';
 import { isDemoMode, hasSession, reserveLoanNumber, saveVoucher } from './lib/backend.js';
 import { pesosInWords } from './lib/numberToWords.js';
-import { downloadVoucherHtml } from './lib/download.js';
+import { downloadVoucherPng, printVoucherImage } from './lib/voucherImage.js';
 
 const today = () => new Date().toISOString().slice(0, 10);
 
@@ -99,7 +99,19 @@ export default function App() {
           'reconnected — otherwise it will be missing from History.'
       );
     }
-    window.print();
+    try {
+      await printVoucherImage();
+    } catch (e) {
+      alert('Could not prepare the voucher for printing: ' + (e.message || e));
+    }
+  }
+
+  async function handleDownload() {
+    try {
+      await downloadVoucherPng(voucher.loan_number);
+    } catch (e) {
+      alert('Could not create the image: ' + (e.message || e));
+    }
   }
 
   if (unlocked === null) return null;
@@ -143,7 +155,7 @@ export default function App() {
                 <VoucherForm voucher={voucher} onChange={updateField} />
                 <div className="actions">
                   <button className="btn" onClick={handlePrint}>🖨 Print</button>
-                  <button className="btn" onClick={() => downloadVoucherHtml(voucher.loan_number)}>
+                  <button className="btn" onClick={handleDownload}>
                     ⬇ Download
                   </button>
                 </div>

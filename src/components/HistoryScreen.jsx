@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import VoucherPreview from './VoucherPreview.jsx';
 import { listVouchers } from '../lib/backend.js';
-import { downloadVoucherHtml } from '../lib/download.js';
+import { downloadVoucherPng, printVoucherImage } from '../lib/voucherImage.js';
 
 const fmt = (value) =>
   (Number(value) || 0).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -92,8 +92,20 @@ export default function HistoryScreen() {
         <div className="modal-overlay" onClick={() => setSelected(null)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-actions">
-              <button className="btn" onClick={() => window.print()}>🖨 Print</button>
-              <button className="btn" onClick={() => downloadVoucherHtml(selected.loan_number)}>
+              <button
+                className="btn"
+                onClick={() => printVoucherImage().catch((e) => alert('Could not print: ' + (e.message || e)))}
+              >
+                🖨 Print
+              </button>
+              <button
+                className="btn"
+                onClick={() =>
+                  downloadVoucherPng(selected.loan_number).catch((e) =>
+                    alert('Could not create the image: ' + (e.message || e))
+                  )
+                }
+              >
                 ⬇ Download
               </button>
               <button className="btn" onClick={() => setSelected(null)}>Close</button>
