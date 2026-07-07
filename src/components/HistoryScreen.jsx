@@ -45,6 +45,9 @@ export default function HistoryScreen() {
           onChange={(e) => setSearch(e.target.value)}
         />
         <button className="btn" type="submit">Search</button>
+        <button className="btn" type="button" onClick={() => load(search)} disabled={loading}>
+          ⟳ Refresh
+        </button>
       </form>
 
       {error && <p className="error-text">{error}</p>}
