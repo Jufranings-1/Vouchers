@@ -586,12 +586,12 @@ body {
     margin-bottom: 6px;
   }
 
-  /* Prints on standard A4 paper loaded portrait, but the page itself is
-     sized to exactly half the height of a portrait A4 sheet (210mm x
-     148.5mm) so the original wide, two-column voucher layout keeps its
-     shape without stacking - it just prints smaller, on half the page. */
+  /* Standard full A4 portrait sheet. The voucher is sized compactly
+     (see the overrides above) so it naturally occupies about the top
+     half of the page, leaving the rest blank - rather than a custom
+     half-height page, which some printers handle unreliably. */
   @page {
-    size: 210mm 148.5mm;
+    size: A4 portrait;
     margin: 6mm;
   }
 }
