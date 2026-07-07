@@ -536,18 +536,62 @@ body {
     max-width: none;
     min-width: 0;
     border-radius: 0;
-    font-size: 13px;
+    font-size: 11px;
   }
 
-  /* Portrait is narrower than the on-screen two-column layout, so stack
-     Distribution of Account above the Pesos/Received box instead of
-     side by side. */
+  .voucher-print .v-header {
+    margin-bottom: 8px;
+  }
+
+  .voucher-print .v-particulars {
+    margin-bottom: 8px;
+  }
+
   .voucher-print .v-mid {
-    flex-direction: column;
+    margin-bottom: 8px;
+    gap: 10px;
   }
 
+  .voucher-print .v-right {
+    gap: 8px;
+  }
+
+  .voucher-print .v-sign-line {
+    margin-top: 8px;
+  }
+
+  .voucher-print .v-particulars td {
+    height: 22px;
+  }
+
+  .voucher-print .v-logo-img {
+    height: 52px;
+  }
+
+  .voucher-print .v-sig {
+    padding: 6px 10px;
+  }
+
+  .voucher-print .v-payto-box {
+    min-height: 38px;
+    padding: 8px 12px;
+  }
+
+  .voucher-print .v-pesos {
+    padding: 8px;
+  }
+
+  .voucher-print .v-words {
+    padding-bottom: 6px;
+    margin-bottom: 6px;
+  }
+
+  /* Prints on standard A4 paper loaded portrait, but the page itself is
+     sized to exactly half the height of a portrait A4 sheet (210mm x
+     148.5mm) so the original wide, two-column voucher layout keeps its
+     shape without stacking - it just prints smaller, on half the page. */
   @page {
-    size: A4 portrait;
-    margin: 10mm;
+    size: 210mm 148.5mm;
+    margin: 6mm;
   }
 }
