@@ -450,7 +450,12 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  /* Pesos box at the top, Received by pinned to the bottom of the column.
+     The column stretches to the Distribution table's height, so Received
+     by's underline always ends level with the table's bottom edge no
+     matter how tall the amount-in-words text gets. */
+  justify-content: space-between;
+  gap: 8px;
   margin-top: 22px;
 }
 
@@ -471,7 +476,7 @@ body {
   min-height: 28px;
   border-bottom: 1px dashed #94a3b8;
   padding-bottom: 14px;
-  margin-bottom: 18px;
+  margin-bottom: 12px;
 }
 
 .v-bankline {
