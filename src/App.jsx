@@ -114,6 +114,27 @@ export default function App() {
     }
   }
 
+  // Loads a voucher from History back into the form so it can be corrected
+  // and re-saved (Print / Next Transaction both save via upsert, so the
+  // existing record is updated, not duplicated).
+  function handleEditVoucher(row) {
+    if (voucher.loan_number && voucher.borrower.trim()) {
+      const ok = window.confirm(
+        `Edit voucher ${row.loan_number}?\n\nThe voucher you are currently working on (${voucher.loan_number}) will be replaced on screen. If you already printed or saved it, it is safe in History.`
+      );
+      if (!ok) return;
+    }
+    const loaded = emptyVoucher();
+    for (const key of Object.keys(loaded)) {
+      const value = row[key];
+      if (value === null || value === undefined) continue;
+      loaded[key] = typeof value === 'number' ? (value === 0 ? '' : String(value)) : String(value);
+    }
+    setVoucher(loaded);
+    setManual({ cash: false, words: false });
+    setScreen('voucher');
+  }
+
   if (unlocked === null) return null;
   if (!unlocked) return <PasswordGate onUnlocked={() => setUnlocked(true)} />;
 
@@ -175,7 +196,7 @@ export default function App() {
         </div>
       )}
 
-      {screen === 'history' && <HistoryScreen />}
+      {screen === 'history' && <HistoryScreen onEdit={handleEditVoucher} />}
       {screen === 'settings' && <SettingsScreen />}
     </>
   );

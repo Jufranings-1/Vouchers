@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import VoucherPreview from './VoucherPreview.jsx';
-import { listVouchers } from '../lib/backend.js';
+import { listVouchers, deleteVoucher } from '../lib/backend.js';
 import { downloadVoucherPng, printVoucherImage } from '../lib/voucherImage.js';
 
 const fmt = (value) =>
   (Number(value) || 0).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-export default function HistoryScreen() {
+export default function HistoryScreen({ onEdit }) {
   const [rows, setRows] = useState([]);
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState(null);
@@ -28,6 +28,20 @@ export default function HistoryScreen() {
   useEffect(() => {
     load('');
   }, []);
+
+  async function handleDelete(row) {
+    const ok = window.confirm(
+      `Delete voucher ${row.loan_number}${row.borrower ? ` (${row.borrower})` : ''}?\n\n` +
+        'This removes it from History permanently. The loan number stays used and will NOT be given out again.'
+    );
+    if (!ok) return;
+    try {
+      await deleteVoucher(row.loan_number);
+      await load(search);
+    } catch (e) {
+      alert('Could not delete: ' + (e.message || e));
+    }
+  }
 
   return (
     <div className="panel">
@@ -74,8 +88,10 @@ export default function HistoryScreen() {
                 <td>{row.borrower}</td>
                 <td>{fmt(row.loan_amount)}</td>
                 <td>{fmt(row.cash_in_bank)}</td>
-                <td>
+                <td className="history-actions">
                   <button className="btn" onClick={() => setSelected(row)}>View</button>
+                  <button className="btn" onClick={() => onEdit(row)}>✎ Edit</button>
+                  <button className="btn btn-danger" onClick={() => handleDelete(row)}>🗑 Delete</button>
                 </td>
               </tr>
             ))}

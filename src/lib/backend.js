@@ -91,6 +91,16 @@ export async function listVouchers(search = '') {
   return data;
 }
 
+export async function deleteVoucher(loanNumber) {
+  if (isDemoMode) {
+    const all = readVouchers().filter((v) => v.loan_number !== loanNumber);
+    localStorage.setItem(VOUCHERS_KEY, JSON.stringify(all));
+    return;
+  }
+  const { error } = await supabase.from('vouchers').delete().eq('loan_number', loanNumber);
+  if (error) throw new Error(error.message);
+}
+
 export async function getCounter() {
   if (isDemoMode) return readCounter();
   const { data, error } = await supabase.from('voucher_counter').select('*').eq('id', 1).single();
