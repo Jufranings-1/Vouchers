@@ -42,7 +42,7 @@ export default function VoucherPreview({ voucher }) {
           <div className="v-logo-text">LENDING INVESTOR INC.</div>
         </div>
         <div className="v-payto">
-          <div className="v-tab">CHECK VOUCHER</div>
+          <div className="v-tab">VOUCHER</div>
           <div className="v-payto-box">
             <strong>{voucher.borrower}</strong>
           </div>
