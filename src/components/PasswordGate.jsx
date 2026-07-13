@@ -26,7 +26,7 @@ export default function PasswordGate({ onUnlocked }) {
     <div className="gate">
       <form className="gate-card" onSubmit={handleSubmit}>
         <img src={logoUrl} alt="J2M Lending Investor Inc." className="gate-logo-img" />
-        <h2>Check Voucher System</h2>
+        <h2>Voucher System</h2>
         <p>Enter the office password to continue. You will only be asked once on this device.</p>
         <input
           type="password"

@@ -141,7 +141,7 @@ export default function App() {
   return (
     <>
       <header className="topbar">
-        <h1>Check Voucher System</h1>
+        <h1>Voucher System</h1>
         <nav>
           <button className={screen === 'voucher' ? 'active' : ''} onClick={() => setScreen('voucher')}>
             New Voucher
